@@ -84,11 +84,11 @@ resource "null_resource" "health_check" {
     command     = "for i in `seq 1 60`; do if `command -v wget > /dev/null`; then wget --no-check-certificate -O - -q $ENDPOINT >/dev/null && exit 0 || true; else curl -k -s $ENDPOINT >/dev/null && exit 0 || true;fi; sleep 5; done; echo TIMEOUT && exit 1"
     interpreter = ["/bin/sh", "-c"]
     environment = {
-      ENDPOINT = "http://${alicloud_instance.example.public_ip}:var.service_port"
+      ENDPOINT = "http://${alicloud_instance.example.public_ip}:${var.service_port}"
     }
   }
 }
 
 output "endpoint_webservice" {
-  value = "http://${alicloud_instance.example.public_ip}:8888"
+  value = "http://${alicloud_instance.example.public_ip}:${var.service_port}"
 }
