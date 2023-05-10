@@ -75,6 +75,10 @@ data "alicloud_security_groups" "default" {
   name_regex = "default"
 }
 
+output "service_port" {
+  value = var.service_port
+}
+
 resource "null_resource" "health_check" {
   depends_on = [
     alicloud_instance.example,
@@ -88,6 +92,7 @@ resource "null_resource" "health_check" {
     }
   }
 }
+
 
 output "endpoint_webservice" {
   value = "http://${alicloud_instance.example.public_ip}:${var.service_port}"
