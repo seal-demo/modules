@@ -3,6 +3,11 @@ variable "jar_url" {
   type = string
 }
 
+variable "service_port" {
+  description = "The service port of the Jar package"
+  default = 80
+}
+
 variable "instance_type" {
   description = "The instance type of the ECS instance"
   default     = "ecs.s6-c1m2.small"
@@ -79,7 +84,7 @@ resource "null_resource" "health_check" {
     command     = "for i in `seq 1 60`; do if `command -v wget > /dev/null`; then wget --no-check-certificate -O - -q $ENDPOINT >/dev/null && exit 0 || true; else curl -k -s $ENDPOINT >/dev/null && exit 0 || true;fi; sleep 5; done; echo TIMEOUT && exit 1"
     interpreter = ["/bin/sh", "-c"]
     environment = {
-      ENDPOINT = "http://${alicloud_instance.example.public_ip}:8888"
+      ENDPOINT = "http://${alicloud_instance.example.public_ip}:var.service_port"
     }
   }
 }
