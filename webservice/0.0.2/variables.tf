@@ -24,7 +24,7 @@ variable "env" {
 variable "request_cpu" {
   type        = string
   description = "CPU request. e.g. 0.5, 1, 2"
-  default     = "0.1"
+  default     = "0.5"
 }
 # @group "Resources"
 # @label "Memory Request"
