@@ -20,7 +20,6 @@ variable "env" {
 }
 # @group "Resources"
 # @label "CPU Request"
-# @options ["0.5","1","2"]
 variable "request_cpu" {
   type        = string
   description = "CPU request. e.g. 0.5, 1, 2"
