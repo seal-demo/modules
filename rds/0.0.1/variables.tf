@@ -48,7 +48,7 @@ variable "username" {
   default     = "rdsusr"
 
   validation {
-    condition     = can(regex("^[A-Za-z_]{0,15}[a-z0-9]$", var.username))
+    condition     = can(regex("^[^pg][a-z][a-z0-9_]{0,61}[a-z0-9]$", var.username))
     error_message = format("Invalid username: %s", var.username)
   }
 }
@@ -71,19 +71,11 @@ variable "database" {
 #################
 
 # @group "Advanced"
-# @label "Instance Type"
-variable "instance_type" {
-  type        = string
-  description = "Specify the instance type to deploy the RDS engine, pick burstable 2C4G type automatically if empty."
-  default     = ""
-}
-
-# @group "Advanced"
-# @label "Storage Type"
-variable "storage_type" {
-  type        = string
-  description = "Specify the storage type to deploy the RDS engine, pick GP2 if empty."
-  default     = ""
+# @label "Ephemeral Storage"
+variable "emphemeral_storage" {
+  type        = bool
+  description = "Specify to use emphemeral storage, which is nice for testing."
+  default     = false
 }
 
 # @group "Advanced"
@@ -100,18 +92,10 @@ variable "init_sql_url" {
 }
 
 # @group "Advanced"
-# @label "Publicly Accessible"
-variable "publicly_accessible" {
-  type        = bool
-  description = "Specify to allow publicly accessing."
-  default     = false
-}
-
-# @group "Advanced"
-# @label "VPC ID"
-variable "vpc_id" {
+# @label "Namespace"
+variable "namespace" {
   type        = string
-  description = "Specify the existing VPC ID to deploy, create a new one if empty."
+  description = "Specify the Kubernetes namespace to deploy, generate automatically if empty."
   default     = ""
 }
 
