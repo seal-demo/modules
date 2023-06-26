@@ -1,60 +1,60 @@
-# @label "Image Name"
-# @group "Basic"
+# @label "镜像名称"
+# @group "基础"
 variable "image" {
   type        = string
-  description = "Docker image name"
+  description = "Docker镜像名称"
 }
-# @label "Ports"
-# @group "Basic"
+# @label "端口"
+# @group "基础"
 variable "ports" {
   type        = list(number)
-  description = "Service ports to expose"
+  description = "服务端口"
   default     = [80]
 }
-# @label "Environment Variables"
-# @group "Basic"
+# @label "环境变量"
+# @group "基础"
 variable "env" {
   type        = map(string)
   description = "Name and value pairs to set as the environment variables"
   default     = {}
 }
-# @group "Resources"
-# @label "CPU Request"
+# @group "资源"
+# @label "CPU预留"
 variable "request_cpu" {
   type        = string
   description = "CPU request. e.g. 0.5, 1, 2"
   default     = "0.1"
 }
-# @group "Resources"
-# @label "Memory Request"
+# @group "资源"
+# @label "内存预留"
 variable "request_memory" {
   type        = string
   description = "Memory request. e.g. 128Mi, 512Mi, 1Gi, 2Gi, 4Gi"
   default     = "128Mi"
 }
-# @group "Resources"
-# @label "CPU Limit"
+# @group "资源"
+# @label "CPU限制"
 variable "limit_cpu" {
   type        = string
   description = "CPU limit. e.g. 0.5, 1, 2"
   default     = ""
 }
-# @group "Resources"
-# @label "Memory Limit"
+# @group "资源"
+# @label "内存限制"
 variable "limit_memory" {
   type        = string
   description = "Memory limit. e.g. 128Mi, 512Mi, 1Gi, 2Gi, 4Gi"
   default     = ""
 }
-# @label "Namespace"
-# @group "Advanced"
+# @label "Kubernetes命名空间"
+# @group "高级"
 variable "namespace" {
   type        = string
   description = "Namespace to deploy. Auto-generated if empty."
   default     = ""
 }
-# @label "Deployment Name"
-# @group "Advanced"
+# @label "Deployment名称"
+# @group "高级"
 variable "name" {
   type        = string
   description = "Name of the deployment resource. Auto-generated if empty."
