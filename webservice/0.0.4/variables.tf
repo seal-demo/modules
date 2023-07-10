@@ -4,6 +4,14 @@ variable "image" {
   type        = string
   description = "Docker镜像名称"
 }
+
+# @label "副本数"
+# @group "基础"
+variable "replicas" {
+  type        = number
+  description = "Deployment副本数"
+}
+
 # @label "端口"
 # @group "基础"
 variable "ports" {
