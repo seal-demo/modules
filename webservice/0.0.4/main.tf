@@ -18,6 +18,7 @@ module "deployment" {
   name      = local.name
   namespace = local.namespace
   image     = var.image
+  replicas  = var.replicas
   resources = {
     request_cpu    = var.request_cpu == "" ? null : var.request_cpu
     limit_cpu      = var.limit_cpu == "" ? null : var.limit_cpu
