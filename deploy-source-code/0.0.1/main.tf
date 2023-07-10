@@ -1,13 +1,35 @@
 terraform {
   required_providers {
-    kubectl = {
-      source  = "gavinbunney/kubectl"
-      version = "1.14.0"
+    kaniko = {
+      source  = "seal-io/kaniko"
+      version = "0.0.1"
     }
   }
 }
 
+#######
+# Build
+#######
+
+resource "kaniko_image" "image" {
+  # Only handle git context. Explicitly use the git scheme.
+  context     = replace(var.git_url, "https://", "git://")
+  dockerfile  = var.dockerfile
+  destination = var.image
+
+  git_username      = var.git_auth ? var.git_username : ""
+  git_password      = var.git_auth ? var.git_password : ""
+  registry_username = var.registry_auth ? var.registry_username : ""
+  registry_password = var.registry_auth ? var.registry_password : ""
+}
+
+########
+# Deploy 
+########
+
 module "deployment" {
+  depends_on = [resource.kaniko_image.image]
+
   # disable wait for all pods be ready.
   #
   wait_for_rollout = false
@@ -18,6 +40,7 @@ module "deployment" {
   name      = local.name
   namespace = local.namespace
   image     = var.image
+  replicas  = var.replicas
   resources = {
     request_cpu    = var.request_cpu == "" ? null : var.request_cpu
     limit_cpu      = var.limit_cpu == "" ? null : var.limit_cpu
@@ -28,6 +51,7 @@ module "deployment" {
 }
 
 module "service" {
+  depends_on = [resource.kaniko_image.image]
 
   source  = "terraform-iaac/service/kubernetes"
   version = "1.0.4"
@@ -52,6 +76,10 @@ data "kubernetes_service" "service" {
     namespace = local.namespace
   }
 }
+
+########
+# Common
+########
 
 locals {
   name      = coalesce(var.name, "${var.seal_metadata_service_name}")
