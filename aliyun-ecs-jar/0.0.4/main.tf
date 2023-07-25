@@ -11,7 +11,6 @@ resource "alicloud_instance" "example" {
   
   key_name = "seal-demo"
 
-  tags = var.dependsOn
 
   security_groups = [
     data.alicloud_security_groups.default.groups.0.id
