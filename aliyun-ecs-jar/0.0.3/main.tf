@@ -38,9 +38,6 @@ data "alicloud_security_groups" "default" {
 }
 
 resource "null_resource" "health_check" {
-  depends_on = [
-    alicloud_instance.example,
-  ]
 
   provisioner "local-exec" {
     command     = "for i in `seq 1 60`; do if `command -v wget > /dev/null`; then wget --no-check-certificate -O - -q $ENDPOINT >/dev/null && exit 0 || true; else curl -k -s $ENDPOINT >/dev/null && exit 0 || true;fi; sleep 5; done; echo TIMEOUT && exit 1"
